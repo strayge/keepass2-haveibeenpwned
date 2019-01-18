@@ -361,7 +361,7 @@ namespace HaveIBeenPwned
                     {
                         var breachedEntriesDialog = new BreachedEntriesDialog(pluginHost);
                         breachedEntriesDialog.AddBreaches(result);
-                        breachedEntriesDialog.ShowDialog();
+                        breachedEntriesDialog.Show();
                     }
                 }
             }
