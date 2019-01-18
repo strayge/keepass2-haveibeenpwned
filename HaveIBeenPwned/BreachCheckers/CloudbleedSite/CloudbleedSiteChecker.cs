@@ -29,11 +29,11 @@ namespace HaveIBeenPwned.BreachCheckers.CloudbleedSite
             get { return "Cloudbleed Vulnerability"; }
         }
 
-        public async override Task<List<BreachedEntry>> CheckGroup(PwGroup group, bool expireEntries, bool oldEntriesOnly, bool ignoreDeleted, IProgress<ProgressItem> progressIndicator)
+        public async override Task<List<BreachedEntry>> CheckGroup(PwGroup group, bool expireEntries, bool oldEntriesOnly, bool ignoreDeleted, bool ignoreExpired, IProgress<ProgressItem> progressIndicator)
         {
             progressIndicator.Report(new ProgressItem(0, "Getting Cloudbleed breach list..."));
             var breaches = await GetBreaches(progressIndicator);
-            var entries = group.GetEntries(true).Where(e => !ignoreDeleted || !e.IsDeleted(pluginHost));
+            var entries = group.GetEntries(true).Where(e => (!ignoreDeleted || !e.IsDeleted(pluginHost)) && (!ignoreExpired || !e.Expires));
             var breachedEntries = new List<BreachedEntry>();
 
             uint counter = 0;

@@ -328,7 +328,8 @@ namespace HaveIBeenPwned
                         foreach (var breach in Enum.GetValues(typeof(BreachEnum)))
                         {
                             var foundBreaches = await CheckBreaches(supportedBreachCheckers[(BreachEnum)breach](client, pluginHost),
-                                group, dialog.ExpireEntries, dialog.OnlyCheckOldEntries, dialog.IgnoreDeletedEntries, progressIndicator);
+                                group, dialog.ExpireEntries, dialog.OnlyCheckOldEntries, dialog.IgnoreDeletedEntries, 
+                                dialog.IgnoreExpiredEntries, progressIndicator);
                             result.AddRange(foundBreaches);
                             ((ProgressHelper)progressForm.Tag).CurrentBreach++;
                         }
@@ -337,7 +338,8 @@ namespace HaveIBeenPwned
                     {
                         progressForm.Tag = new ProgressHelper(1);
                         var foundBreaches = await CheckBreaches(supportedBreachCheckers[dialog.SelectedBreach](client, pluginHost),
-                            group, dialog.ExpireEntries, dialog.OnlyCheckOldEntries, dialog.IgnoreDeletedEntries, progressIndicator);
+                            group, dialog.ExpireEntries, dialog.OnlyCheckOldEntries, dialog.IgnoreDeletedEntries, 
+                            dialog.IgnoreExpiredEntries, progressIndicator);
                         result.AddRange(foundBreaches);
                     }
                 }
@@ -375,9 +377,10 @@ namespace HaveIBeenPwned
             bool expireEntries,
             bool oldEntriesOnly,
             bool ignoreDeleted,
+            bool ignoreExpired,
             IProgress<ProgressItem> progressIndicator)
         {
-           return await breachChecker.CheckGroup(group, expireEntries, oldEntriesOnly, ignoreDeleted, progressIndicator);
+           return await breachChecker.CheckGroup(group, expireEntries, oldEntriesOnly, ignoreDeleted, ignoreExpired, progressIndicator);
         }
 
         private bool AssertDatabaseOpen()

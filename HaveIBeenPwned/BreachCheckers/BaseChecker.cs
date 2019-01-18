@@ -21,12 +21,12 @@ namespace HaveIBeenPwned.BreachCheckers
             this.pluginHost = pluginHost;
         }
 
-        public async Task<List<BreachedEntry>> CheckDatabase(bool expireEntries, bool oldEntriesOnly, bool ignoreDeleted, IProgress<ProgressItem> progressIndicator)
+        public async Task<List<BreachedEntry>> CheckDatabase(bool expireEntries, bool oldEntriesOnly, bool ignoreDeleted, bool ignoreExpired, IProgress<ProgressItem> progressIndicator)
         {
-            return await CheckGroup(passwordDatabase.RootGroup, expireEntries, oldEntriesOnly, ignoreDeleted, progressIndicator);
+            return await CheckGroup(passwordDatabase.RootGroup, expireEntries, oldEntriesOnly, ignoreDeleted, ignoreExpired, progressIndicator);
         }
 
-        public abstract Task<List<BreachedEntry>> CheckGroup(PwGroup group, bool expireEntries, bool oldEntriesOnly, bool ignoreDeleted, IProgress<ProgressItem> progressIndicator);
+        public abstract Task<List<BreachedEntry>> CheckGroup(PwGroup group, bool expireEntries, bool oldEntriesOnly, bool ignoreDeleted, bool ignoreExpired, IProgress<ProgressItem> progressIndicator);
 
         public abstract Image BreachLogo { get; }
 
